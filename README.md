@@ -1,0 +1,2 @@
+# docassemble-NDPowerOfAttorneyForCareAndCustodyOfMinor
+A docassemble project for NDPowerOfAttorneyMinorShortFormV2.
