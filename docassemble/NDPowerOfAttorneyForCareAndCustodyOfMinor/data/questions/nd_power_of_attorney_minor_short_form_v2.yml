@@ -1,0 +1,645 @@
+---
+include:
+  - docassemble.AssemblyLine:assembly_line.yml
+  - docassemble.ALAnyState:any_state.yml
+---
+metadata:
+  title: >-
+    ND Power of Attorney Minor Short Form v2
+  short title: >-
+    ND Power of Attorney Mino
+  description: |-
+    Use this form to appoint someone to make decisions for your minor child or children. This Power of Attorney can specify the extent of the authority granted.
+  can_I_use_this_form: |
+    You can use this form if you are a parent or guardian looking to delegate authority for your minor child. It's important to understand the powers you are granting and the duration of this authority.
+  before_you_start: |
+    ### Before you get started
+    - Gather information about your child(ren) and the person you wish to appoint as attorney-in-fact.
+    - Ensure you understand the powers you are delegating.
+
+    ### When you are finished
+    - Sign the form in front of a notary public or clerk of court to make it official.
+    - Provide copies to the appointed attorney-in-fact and keep one for your records.
+  when_you_are_finished: |
+    After completing the form, ensure it is signed and notarized. Share copies with the appointed individual and keep a copy for yourself. This will help ensure that your wishes are followed.
+  efiling_enabled: False
+  integrated_efiling: False
+  integrated_email_filing: False
+  requires_notarization: False
+  unlisted: False
+  landing_page_url: >-
+    https://www.ndcourts.gov/legal-self-help/power-of-attorney
+  maturity: production
+  estimated_completion_minutes: ""
+  estimated_completion_delta: ""
+  LIST_topics:
+    - "CO-00-00-00-00"
+  tags:
+    - "CO-00-00-00-00"
+  authors:
+    - Court Forms Online
+  original_form: []
+  original_form_published_on: ""
+  allowed_courts: []
+  typical_role: "unknown"
+  al_weaver_version: "2.3.1"
+  generated_on: "2026-09-18"
+  languages:
+    - en
+  jurisdiction: "NAM-US"
+  review_date: 2026-09-18
+  form_titles:
+    - ND Power of Attorney Minor Short Form v2
+  form_numbers: []
+  update_notes: ""
+---
+code: |
+  # This controls the default country and list of states in address field questions
+  AL_DEFAULT_COUNTRY = "US"
+---
+code: |
+  # This controls the default state in address field questions
+  AL_DEFAULT_STATE = 'ND'
+---
+code: |
+  github_repo_name = 'docassemble-NdPowerOfAttorneyForCareAndCustodyOfMinor'
+---
+template: interview_short_title
+content: |
+  Grant authority for care and custody of minor child(ren)
+---
+code: |
+  al_form_type = "other_form"
+---
+id: alweaver assemblyline settings
+initial: True
+code: |
+  # Managed by the graphical AssemblyLine settings editor.
+  allowed_courts = []
+  AL_ORGANIZATION_TITLE = ''
+  AL_ORGANIZATION_HOMEPAGE = ''
+  AL_DEFAULT_LANGUAGE = 'en'
+  AL_DEFAULT_OVERFLOW_MESSAGE = '...'
+  user_ask_role = 'unknown'
+  al_person_answering = 'user'
+  al_form_requires_digital_signature = False
+  al_typed_signature_prefix = '/s/'
+  al_typed_signature_font = ''
+  speak_text = True
+  enable_al_language = True
+  al_user_default_language = 'en'
+  al_interview_languages = ['en']
+  github_user = ''
+  al_next_steps_enabled = True
+  al_next_steps_document_title = 'Power of Attorney'
+  al_next_steps_document_purpose = 'authorization'
+  al_next_steps_help_organization = ''
+  al_next_steps_help_url = ''
+  al_next_steps_generate_qr_code = False
+  al_next_steps_what_happens_next = 'After completing the form, ensure it is signed and notarized. Share copies with the appointed individual and keep a copy for yourself. This will help ensure that your wishes are followed.'
+  al_next_steps_what_can_decision_maker_do = "The decision-maker can make choices regarding the child's care and custody as specified in the form. They cannot consent to marriage or adoption unless explicitly allowed."
+  al_next_steps_what_happens_if_i_win = "If the appointed attorney-in-fact successfully carries out their duties, your child's needs will be met according to your wishes. You can revoke the power of attorney at any time if circumstances change."
+  # AL_DEFAULT_COUNTRY is set in one of your own code blocks, not here.
+  # AL_DEFAULT_STATE is set in one of your own code blocks, not here.
+  # al_form_type is set in one of your own code blocks, not here.
+  # github_repo_name is set in one of your own code blocks, not here.
+---
+objects:
+  - attorney_in_fact: ALPeopleList.using(ask_number=True,target_number=1)
+  - children: ALPeopleList.using(there_are_any=True)
+  - notary: ALPeopleList.using(ask_number=True,target_number=1)
+  - users: ALPeopleList.using(ask_number=True,target_number=1)
+---
+sections:
+  - people: Begin here
+  - about_you: Your contact & family
+  - case_details: Power of attorney details
+  - sign_and_submit: Sign & submit
+  - review_nd_power_of_attorney_minor_short_form_v2: Review your answers
+---
+#################### Interview order #####################
+comment: |
+  Controls order and branching logic for questions specific to this form
+id: interview_order_nd_power_of_attorney_minor_short_form_v2
+mandatory: True
+code: |
+  al_intro_screen
+  nd_power_of_attorney_minor_short_form_v2_intro
+  nav.set_section('about_you')
+  users.gather()
+  users[0].address.address
+  users1_email_address
+  users[0].phone_number
+  set_progress(17)
+  children.gather()
+  children[0].birthdate
+  if children.number() > 1:
+    children[1].birthdate
+  if children.number() > 2:
+    children[2].birthdate
+  set_parts(subtitle=str(users))
+  set_progress(34)
+  users1_is_parent
+  nav.set_section('case_details')
+  delegate_all_powers_yes
+  users1_end_date
+  set_progress(51)
+  attorney_in_fact.gather()
+  attorney_in_fact[0].address.address
+  set_progress(68)
+  nav.set_section('sign_and_submit')
+  signature_date
+  signature_date
+  store_variables_snapshot( persistent=True, data={ "zip": showifdef("users[0].address.zip"), "reached_interview_end": True, }, )
+  nd_power_of_attorney_minor_short_form_v2_preview_question
+  notary_date
+  basic_questions_signature_flow
+  set_progress(100)
+  nd_power_of_attorney_minor_short_form_v2_download
+---
+id: ND Power of Attorney Minor Short Form v2 intro
+continue button field: nd_power_of_attorney_minor_short_form_v2_intro
+question: "North Dakota power of attorney for care and custody of minor child(ren)"
+subquestion: |2
+  ### Before you get started
+  - Gather your child(ren)'s names and birthdates.
+  - Gather the name and address of the person you wish to appoint as attorney-in-fact.
+  - Ensure you understand the powers you are delegating.
+  
+  ### When you are finished
+  - Sign the form in front of a notary public or clerk of court to make it official.
+  - Provide copies to the appointed attorney-in-fact and keep one for your records.
+  
+  You can use this form if you are a parent or guardian looking to delegate authority for your minor child(ren). It's important to understand the powers you are granting and the duration of this authority. Use this form if you are delegating authority for six months or less.
+---
+id: User s Name
+question: |
+  User's Full Name
+subquestion: |
+  Provide your full name
+fields:
+  - "User's full name": users1_name_full
+    datatype: text
+---
+id: Guardian Information
+question: |
+  Guardian Information
+subquestion: |
+  Please specify your relationship to the minor child(ren).
+fields:
+  - "I am a parent": users1_is_parent
+    datatype: yesno
+  - "I am a legal guardian": users1_is_legal_guardian
+    datatype: yesno
+---
+id: User s Address
+question: |
+  User's Address
+subquestion: |
+  Provide your residential address.
+fields:
+  - "User's residential address": users1_address
+---
+id: Powers To Delegate
+question: |2
+  Choose which powers to delegate.
+subquestion: |2
+  Would you like to delegate all the power and authority that you have as a parent or guardian?
+fields:
+  - label: "Yes, delegate all powers."
+    field: delegate_all_powers_yes
+    datatype: yesno
+  - label: "No, I need to choose specific powers."
+    field: delegate_specific_authority_yes
+    datatype: yesno
+  - label: "Select the powers you want to delegate:"
+    field: specific_authority
+    datatype: checkboxes
+    choices:
+      - "Decisions about education, including permission slips and school documents."
+      - Consent to participation in activities.
+      - "Health care decisions, including access to medical records and consent to disclosure of medical records."
+      - "Authority to execute documents aside from school, activities, or health care."
+      - "Other (fill in the box below):"
+    show if: delegate_specific_authority_yes
+    input type: area
+  - label: "Describe the authority you want to delegate:"
+    field: specific_authority_other
+    show if: "specific_authority['Other (fill in the box below):']"
+---
+id: Authority Duration
+question: |
+  Authority Duration
+subquestion: |
+  Specify the end date for the power of attorney.
+fields:
+  - label: End date of authority
+    field: users1_end_date
+    datatype: date
+    help: Must be within 6 months.
+    min: "${ today().year }"
+    max: "${ today().plus(months=6) }"
+---
+id: Contact Information
+question: |
+  Contact Information
+subquestion: |
+  Please provide your email contact.
+fields:
+  - "User's email contact": users1_email_address
+    datatype: text
+---
+id: Notary Information
+question: |
+  Notary Information
+subquestion: |
+  Fill in the details for the notary signing.
+fields:
+  - "Date of notary signing": notary_date
+    datatype: date
+  - "Notary commission expiration date": notary_commission_expiration_date
+    datatype: date
+---
+comment: |
+  The questions below are copies of the questions in AssemblyLine's
+  ql_baseline.yml, rewritten to name this interview's own objects instead of the
+  generic `x`. Edit them freely: they replace the AssemblyLine versions. Delete
+  one to go back to the AssemblyLine wording.
+---
+id: attorney in fact names
+sets:
+  - attorney_in_fact[i].name.first
+  - attorney_in_fact[i].name.last
+  - attorney_in_fact[i].name.middle
+  - attorney_in_fact[i].name.suffix
+question: |
+  % if hasattr(attorney_in_fact, 'ask_number') and attorney_in_fact.ask_number and attorney_in_fact.target_number == 1:
+  Name of attorney in fact
+  % else:
+  Name of the ${ ordinal(i) } attorney in fact
+  % endif
+fields:
+  - code: |
+      attorney_in_fact[i].name_fields()
+---
+id: children names
+sets:
+  - children[i].name.first
+  - children[i].name.last
+  - children[i].name.middle
+  - children[i].name.suffix
+question: |
+  % if hasattr(children, 'ask_number') and children.ask_number and children.target_number == 1:
+  Name of child
+  % else:
+  Name of the ${ ordinal(i) } child
+  % endif
+fields:
+  - code: |
+      children[i].name_fields()
+---
+id: another child
+question: |
+  Is there another child to tell us about?
+fields:
+  - no label: children.there_is_another
+    datatype: yesnoradio
+---
+id: notary names
+sets:
+  - notary[i].name.first
+  - notary[i].name.last
+  - notary[i].name.middle
+  - notary[i].name.suffix
+question: |
+  % if hasattr(notary, 'ask_number') and notary.ask_number and notary.target_number == 1:
+  Name of notary
+  % else:
+  Name of the ${ ordinal(i) } notary
+  % endif
+fields:
+  - code: |
+      notary[i].name_fields()
+---
+id: users names
+sets:
+  - users[i].name.first
+  - users[i].name.last
+  - users[i].name.middle
+  - users[i].name.suffix
+question: |
+  % if i == 0 and al_person_answering == "user":
+  What is your name?
+  % elif al_form_type in ['starts_case', 'existing_case', 'appeal']:
+  Who is the ${ ordinal(i) } person on your side of the case?
+  % else:
+  What is the name of the ${ ordinal(i) } person who is adding their
+  name to this form with you?
+  % endif
+fields:
+  - code: |
+      users[i].name_fields()
+---
+id: user phone number
+question: What is your phone number?
+fields:
+  - "Phone": users[0].phone_number
+    datatype: al_international_phone
+---
+id: preview nd_power_of_attorney_minor_short_form_v2
+question: |
+  Preview your form before you sign it
+subquestion: |
+  Here is a preview of the form you will sign on the next page.
+
+  ${ al_recipient_bundle.as_pdf(key='preview') }
+
+  Open the form preview in a new tab. Use the "Edit answers" button to edit your
+  answers.
+
+  ${ action_button_html(url_action('review_nd_power_of_attorney_minor_short_form_v2'), label=word('Edit answers'), color='info') }
+
+  Return to this interview tab to continue and sign your form.
+continue button field: nd_power_of_attorney_minor_short_form_v2_preview_question
+---
+code: |
+  signature_fields = ['users[0].signature', 'notary[0].signature']
+---
+id: nd power of attorney minor short form v2 review screen
+event: review_nd_power_of_attorney_minor_short_form_v2
+question: |
+  Review your answers
+review:
+  - Edit: users.revisit
+    button: |
+      **Users**
+      % for item in users:
+        * ${ item }
+      % endfor
+  - Edit: users1_is_parent
+    button: |
+      **Guardian Information**
+      Is user a parent: ${ word(yesno(users1_is_parent)) if defined('users1_is_parent') else '' }
+      Is user a legal guardian: ${ word(yesno(users1_is_legal_guardian)) if defined('users1_is_legal_guardian') else '' }
+  - Edit: users1_address
+    button: |
+      **User's Address**
+      User's residential address: ${ showifdef('users1_address') }
+  - Edit: delegate_all_powers_yes
+    button: |
+      **Attorney-in-Fact Details**
+      Delegates all powers to attorney: ${ word(yesno(delegate_all_powers_yes)) if defined('delegate_all_powers_yes') else '' }
+      Delegates specific authority to attorney: ${ word(yesno(delegate_specific_authority_yes)) if defined('delegate_specific_authority_yes') else '' }
+      Details of specific authority: ${ single_paragraph(specific_authority) if defined('specific_authority') else '' }
+  - Edit: users1_end_date
+    button: |
+      **Authority Duration**
+      End date of authority: ${ showifdef('users1_end_date') }
+  - Edit: users1_email_address
+    button: |
+      **Contact Information**
+      User's email contact: ${ showifdef('users1_email_address') }
+  - Edit: notary_date
+    button: |
+      **Notary Information**
+      Date of notary signing: ${ showifdef('notary_date') }
+      Notary commission expiration date: ${ showifdef('notary_commission_expiration_date') }
+  - Edit: children.revisit
+    button: |
+      **Children**
+      % for item in children:
+        * ${ item }
+      % endfor
+  - Edit: attorney_in_fact.revisit
+    button: |
+      **Attorney in fact**
+      % for item in attorney_in_fact:
+        * ${ item }
+      % endfor
+  - Edit: notary.revisit
+    button: |
+      **Notary**
+      % for item in notary:
+        * ${ item }
+      % endfor
+  - Edit: users1_is_parent
+    button: |
+      **Is user a parent**
+      Is user a parent: ${ word(yesno(users1_is_parent)) if defined('users1_is_parent') else '' }
+  - Edit: users1_is_legal_guardian
+    button: |
+      **Is user a legal guardian**
+      Is user a legal guardian: ${ word(yesno(users1_is_legal_guardian)) if defined('users1_is_legal_guardian') else '' }
+  - Edit: users1_address
+    button: |
+      **User's residential address**
+      User's residential address: ${ showifdef('users1_address') }
+  - Edit: delegate_all_powers_yes
+    button: |
+      **Delegates all powers to attorney**
+      Delegates all powers to attorney: ${ word(yesno(delegate_all_powers_yes)) if defined('delegate_all_powers_yes') else '' }
+  - Edit: delegate_specific_authority_yes
+    button: |
+      **Delegates specific authority to attorney**
+      Delegates specific authority to attorney: ${ word(yesno(delegate_specific_authority_yes)) if defined('delegate_specific_authority_yes') else '' }
+  - Edit: specific_authority
+    button: |
+      **Details of specific authority**
+      Details of specific authority: ${ single_paragraph(specific_authority) if defined('specific_authority') else '' }
+  - Edit: users1_end_date
+    button: |
+      **End date of authority**
+      End date of authority: ${ showifdef('users1_end_date') }
+  - Edit: users1_email_address
+    button: |
+      **User's email contact**
+      User's email contact: ${ showifdef('users1_email_address') }
+  - Edit: notary_date
+    button: |
+      **Date of notary signing**
+      Date of notary signing: ${ showifdef('notary_date') }
+  - Edit: notary_commission_expiration_date
+    button: |
+      **Notary commission expiration date**
+      Notary commission expiration date: ${ showifdef('notary_commission_expiration_date') }
+  - Edit:: users1.phone_number
+    button: "${ showifdef(\"users1.phone_number\") }"
+---
+id: edit users
+continue button field: users.revisit
+question: |
+  Edit users
+subquestion: |
+  ${ users.table }
+
+  ${ users.add_action() }
+---
+table: users.table
+rows: users
+columns:
+  - Name: |
+      row_item.name_full() if defined("row_item.name.first") else ""
+  - Address: |
+      row_item.address.block() if defined("row_item.address.address") else ""
+  - Signature: |
+      row_item.signature if defined("row_item.signature") else ""
+  - Phone number: |
+      row_item.phone_number if defined("row_item.phone_number") else ""
+edit:
+  - name.first
+  - address.address
+  - phone_number
+confirm: True
+---
+id: edit children
+continue button field: children.revisit
+question: |
+  Edit children
+subquestion: |
+  ${ children.table }
+
+  ${ children.add_action() }
+---
+table: children.table
+rows: children
+columns:
+  - Name: |
+      row_item.name_full() if defined("row_item.name.first") else ""
+  - Birthdate: |
+      row_item.birthdate if defined("row_item.birthdate") else ""
+edit:
+  - name.first
+  - birthdate
+confirm: True
+---
+id: edit attorney in fact
+continue button field: attorney_in_fact.revisit
+question: |
+  Edit attorney_in_fact
+subquestion: |
+  ${ attorney_in_fact.table }
+
+  ${ attorney_in_fact.add_action() }
+---
+table: attorney_in_fact.table
+rows: attorney_in_fact
+columns:
+  - Name: |
+      row_item.name_full() if defined("row_item.name.first") else ""
+  - Address: |
+      row_item.address.block() if defined("row_item.address.address") else ""
+edit:
+  - name.first
+  - address.address
+confirm: True
+---
+id: edit notary
+continue button field: notary.revisit
+question: |
+  Edit notary
+subquestion: |
+  ${ notary.table }
+
+  ${ notary.add_action() }
+---
+table: notary.table
+rows: notary
+columns:
+  - Signature: |
+      row_item.signature if defined("row_item.signature") else ""
+edit: True
+confirm: True
+---
+id: download nd_power_of_attorney_minor_short_form_v2
+event: nd_power_of_attorney_minor_short_form_v2_download
+question: |
+  All done
+subquestion: |
+  Thank you ${users}. Your form is ready to download and deliver.
+
+  Use the options on this page to view, download and send your form. Use the
+  "Edit answers" button to fix any mistakes.
+
+  ${ action_button_html(url_action('review_nd_power_of_attorney_minor_short_form_v2'), label=word('Edit answers'), color='info') }
+
+  ${ al_user_bundle.download_list_html() }
+
+  ${ al_user_bundle.send_button_html(show_editable_checkbox=False) }
+
+progress: 100
+---
+# ALDocument objects specify the metadata for each template
+objects:
+  - nd_power_of_attorney_minor_short_form_v2_Post_interview_instructions: ALDocument.using(filename="nd_power_of_attorney_minor_short_form_v2_next_steps.docx", enabled=al_next_steps_enabled, title="Next steps", has_addendum=False)
+  - nd_power_of_attorney_minor_short_form_v2_attachment: ALDocument.using(filename="nd_power_of_attorney_minor_short_form_v2", enabled=True, title="Power of attorney", has_addendum=False)
+---
+# Bundles group the ALDocuments into separate downloads, such as for court and for the user
+objects:
+  - al_user_bundle: ALDocumentBundle.using(elements=[nd_power_of_attorney_minor_short_form_v2_Post_interview_instructions, nd_power_of_attorney_minor_short_form_v2_attachment], filename="nd_power_of_attorney_minor_short_form_v2", title="All documents", enabled=True)
+  - al_recipient_bundle: ALDocumentBundle.using(elements=[nd_power_of_attorney_minor_short_form_v2_attachment], filename="nd_power_of_attorney_minor_short_form_v2", title="All documents", enabled=True)
+---
+template: nd_power_of_attorney_minor_short_form_v2_Post_interview_instructions.title
+content: |
+  Instructions
+---
+template: nd_power_of_attorney_minor_short_form_v2_attachment.title
+content: |
+  ND Power of Attorney Minor Short Form v2
+---
+template: al_user_bundle.title
+content: |
+  All forms to download for your records
+---
+template: al_recipient_bundle.title
+content: |
+  All forms to file
+---
+# Each attachment defines a key in an ALDocument. We use `i` as the placeholder here so the
+# same template is used for "preview" and "final" keys, and logic in the template checks
+# the value of `i` to show or hide the user's signature
+attachment:
+  name: Post-interview-Instructions
+  filename: nd_power_of_attorney_minor_short_form_v2_next_steps
+  docx template file: nd_power_of_attorney_minor_short_form_v2_next_steps.docx
+  variable name: nd_power_of_attorney_minor_short_form_v2_Post_interview_instructions[i]
+  skip undefined: True
+  tagged pdf: True
+---
+# Each attachment defines a key in an ALDocument. We use `i` as the placeholder here so the
+# same template is used for "preview" and "final" keys, and logic in the template checks
+# the value of `i` to show or hide the user's signature
+attachment:
+  name: nd power of attorney minor short form v2
+  filename: nd_power_of_attorney_minor_short_form_v2
+  variable name: nd_power_of_attorney_minor_short_form_v2_attachment[i]
+  skip undefined: True
+  pdf template file: ND_Power_of_Attorney_Minor_Short_Form_v2.pdf
+  fields:
+      - "users1_name_full": ${ users[0] }
+      - "users1_name_full__1": ${ users[0] }
+      - "users1_name__1": ${ users[0] }
+      - "users1_is_parent": ${ users1_is_parent }
+      - "users1_is_legal_guardian": ${ users1_is_legal_guardian }
+      - "children1_name": ${ children[0] }
+      - "children1_birthdate": ${ children[0].birthdate.format() }
+      - "children2_name": ${ children[1] }
+      - "children2_birthdate": ${ children[1].birthdate.format() }
+      - "children3_name": ${ children[2] }
+      - "children3_birthdate": ${ children[2].birthdate.format() }
+      - "users1_address_line_one": ${ users[0].address.line_one() }
+      - "users1_address_line_two": ${ users[0].address.line_two() }
+      - "attorney_in_fact_name": ${ attorney_in_fact[0] }
+      - "attorney_in_fact_address_line_one": ${ attorney_in_fact[0].address.line_one() }
+      - "attorney_in_fact_address_line_two": ${ attorney_in_fact[0].address.line_two() }
+      - "delegate_all_powers_yes": ${ delegate_all_powers_yes }
+      - "delegate_specific_authority_yes": ${ delegate_specific_authority_yes }
+      - "specific_authority": ${ specific_authority }
+      - "users1_end_date": ${ users1_end_date.format() }
+      - "signature_date": ${ signature_date.format() }
+      - "users1_signature": ${ users[0].signature_if_final(i) }
+      - "users1_address_on_one_line": ${ users[0].address.on_one_line() }
+      - "users1_phone_number": ${ users[0].phone_numbers() }
+      - "users1_email_address": ${ users1_email_address }
+      - "notary_date": ${ notary_date.format() }
+      - "notary_signature": ${ notary[0].signature_if_final(i) }
+      - "notary_commission_expiration_date": ${ notary_commission_expiration_date.format() }

@@ -1,0 +1,30 @@
+[build-system]
+requires = [
+    "setuptools>=80.9.0,<82",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "docassemble.NDPowerOfAttorneyForCareAndCustodyOfMinor"
+version = "0.0.1"
+description = "A docassemble project for NDPowerOfAttorneyMinorShortFormV2."
+readme = "README.md"
+authors = [
+    { name = "jeanne.peihl@su.suffolk.edu", email = "jeanne.peihl@su.suffolk.edu" },
+]
+dependencies = [
+    "docassemble.ALAnyState @ git+https://github.com/SuffolkLITLab/docassemble-ALAnyState@main",
+    "docassemble.AssemblyLine @ git+https://github.com/SuffolkLITLab/docassemble-AssemblyLine.git@main",
+]
+license = "MIT"
+license-files = [
+    "LICENSE",
+]
+
+[project.urls]
+Homepage = "https://docassemble.org"
+
+[tool.setuptools.packages.find]
+where = [
+    ".",
+]
